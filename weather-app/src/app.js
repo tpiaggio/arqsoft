@@ -20,12 +20,21 @@ app.get('/about', (req, res) => {
 
 app.get('/weather', (req, res) => {
   if(!req.query.address){
+    res.status(412);
     res.send({error: 'You must provide an address'});
     return;
   }
   try {
-    weather(req.query.address, (error, data) => res.send(data));
+    weather(req.query.address, (error, data) => {
+      if (error) {
+        res.status(502);
+        res.send(error);
+        return;
+      }
+      res.send(data);
+    });
   } catch (error) {
+    res.status(500);
     res.send({error});
   }
 })
