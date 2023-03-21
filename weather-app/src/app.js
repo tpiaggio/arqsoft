@@ -21,14 +21,13 @@ app.get('/about', (req, res) => {
 app.get('/weather', (req, res) => {
   if(!req.query.address){
     res.send({error: 'You must provide an address'});
+    return;
   }
-  weather(req.query.address, (error, data) => {
-    if(error) {
-      res.send({error});
-    } else {
-      res.send({data});
-    }
-  })
+  try {
+    weather(req.query.address, (error, data) => res.send(data));
+  } catch (error) {
+    res.send({error});
+  }
 })
 
 app.listen(port, () => {
