@@ -1,5 +1,6 @@
 const express = require('express');
-require('./db/mongoose');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/task-manager');
 const User = require('./models/user');
 const Task = require('./models/task');
 
@@ -9,7 +10,7 @@ const port = 3000;
 app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Hello World');
 });
 
 app.get('/users', (req, res) => {
@@ -39,7 +40,7 @@ app.post('/users', async (req, res) => {
     await user.save();
     res.status(201).send(user);
   } catch (e) {
-    res.status(400).send();
+    res.status(400).send(e);
   }
 });
 
