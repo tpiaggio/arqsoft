@@ -1,12 +1,12 @@
 const redis = require("redis");
 
 const client = redis.createClient();
-const subscriber = client.duplicate();
 
 (async () => {
-  await subscriber.connect();
+  const args = process.argv;
+  await client.connect();
 
-  await subscriber.subscribe('tasks', (message) => {
-    console.log(message); // 'message'
+  await client.subscribe(args[2], (message) => {
+    console.log(message);
   });
 })();
